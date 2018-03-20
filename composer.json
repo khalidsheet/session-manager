@@ -1,0 +1,14 @@
+{
+    "name": "prog98rammer/php-session-class",
+    "description": "A PHP Session Class",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Khalid M. Sheet",
+            "email": "prog.khalid.mohammad@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {}
+}
