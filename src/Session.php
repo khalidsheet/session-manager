@@ -25,7 +25,10 @@ class Session
 
 	public function regenerate_id()
 	{
-		 return session_regenerate_id();
+		session_regenerate_id();
+		$this->id();
+
+		 return session_id();
 	}
 
 	public function prefix($prefix = 'iq_framework_')
