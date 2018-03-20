@@ -106,7 +106,4 @@ $sesssion->regenerate_id(); // will return the id of the session.
 ```php
 $session->destroy();
 ```
-=======
-# php-session-class
->>>>>>> e8aa00bd11594bfc0a5964dcaba55999b7c51720
 
