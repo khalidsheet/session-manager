@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # PHP Session Class
 ### Allows you to deal with Session in php
 ---
