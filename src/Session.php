@@ -19,7 +19,7 @@ class Session
 		// set the session cache expire
 		session_cache_expire($cacheExpire);
 
-		// start the session
+		// start the session 
 		session_start();
 
 		// store the session id
