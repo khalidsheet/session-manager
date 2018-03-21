@@ -6,21 +6,38 @@ namespace Prog98rammer\Session;
 
 class Session
 {
-	public $_prefix;
-	public $session_id;
-	public $sessionKey;
+	protected $_prefix;
+	protected $_randomPrefix;
+	protected $sessionId;
+	protected $sessionKey;
 	
-	public function __construct($prefix = 'session_')
+	public function __construct($cacheExpire = 90, $cacheLimiter = 'private', $sessionPrefix = 'iq_framework_')
 	{
+		// set the cache limiter
+		session_cache_limiter($cacheLimiter);
+
+		// set the session cache expire
+		session_cache_expire($cacheExpire);
+
+		// start the session
 		session_start();
+
+		// store the session id
 		$this->id();
-		$this->_prefix = $prefix;
+
+		// store the session prefix 
+		$this->_prefix = $sessionPrefix;
+	}
+
+	public function status()
+	{
+		return session_status();
 	}
 
 	public function id()
 	{
-		$this->session_id = session_id();
-		return $this;
+		$this->sessionId = session_id();
+		return $this->sessionId;
 	}
 
 	public function regenerate_id()
@@ -39,6 +56,18 @@ class Session
 		} else {
 			throw new \Exception("Prefix {$prefix} must be a String", 1);
 		}
+	}
+
+	public function randomPrefix($length = 15)
+	{
+	    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_$';
+	    $charactersLength = strlen($characters);
+	    $randomPrefix = '';
+	    for ($i = 0; $i < $length; $i++) {
+	        $randomPrefix .= $characters[rand(0, $charactersLength - 1)];
+	    }
+	    $this->_prefix = $randomPrefix . '_';
+	    return $this;
 	}
 
 	public function getPrefix()
