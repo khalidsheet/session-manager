@@ -1,5 +1,5 @@
 {
-    "name": "prog98rammer/php-session-class",
+    "name": "prog98rammer/session-manager",
     "description": "A PHP Session Class",
     "type": "library",
     "license": "MIT",
