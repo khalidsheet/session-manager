@@ -7,13 +7,13 @@ namespace Prog98rammer\Session;
 class Session
 {
 	protected $_prefix;
-	protected $_randomPrefix;
 	protected $sessionId;
 	protected $sessionKey;
 	
 	public function __construct($cacheExpire = 90, $cacheLimiter = 'private', $sessionPrefix = 'iq_framework_')
 	{
-		// set the cache limiter
+		// set the cache limiter.
+		// nocache, private, private_no_expire, or public.
 		session_cache_limiter($cacheLimiter);
 
 		// set the session cache expire
