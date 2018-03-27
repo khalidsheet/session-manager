@@ -9,6 +9,10 @@ class Session
 	protected $_prefix;
 	protected $sessionId;
 	protected $sessionKey;
+	protected $userEmail = [];
+	protected $sessionsFromPrefix = [];
+	protected $auth_prefix;
+	protected $authToken;
 	
 	public function __construct($cacheExpire = 90, $cacheLimiter = 'private', $sessionPrefix = 'iq_framework_')
 	{
@@ -100,9 +104,11 @@ class Session
 		return $this;
 	}
 
-	public function get($key)
+	public function get($key, $prefix = null)
 	{
-		$this->sessionKey = $_SESSION[$this->_prefix.$key];
+		$prefix = !is_null($prefix) ? $prefix : $this->_prefix;
+
+		$this->sessionKey = $_SESSION[$prefix.$key];
 		return $this->sessionKey;
 	}
 
@@ -120,6 +126,74 @@ class Session
 		
 		return $this;
 	}
+
+	public function sessionsFromPrefix($prefix)
+	{
+		foreach($this->all() as $key => $value)
+	    {
+	        if (strpos($key, $prefix) === 0)
+	        {
+	          	$this->sessionsFromPrefix[$key] = $value;
+	        }
+	    }
+
+	    return $this->sessionsFromPrefix;
+	}
+
+	// need fix
+	protected function token($key)
+	{
+		// $key represent for an E-mail
+		$token = hash('sha256', $key); 
+
+		return $token;
+	}
+
+	// need fix
+	protected function getEmailFromToken($token)
+	{
+
+		return $this->authToken[$token];
+	}
+
+	public function test()
+	{
+		return $this->authToken;
+	}
+
+	// this function need fix
+	public function auth($userEmail, array $keys = null, $prefix = 'auth_')
+	{
+		$this->auth_prefix = $prefix;
+		$this->authToken   = [$this->token($userEmail) => $userEmail];
+
+		$newAuthSession = $this->prefix($this->auth_prefix)->set([
+			'email' => $userEmail,
+			'token' => $this->token($userEmail)
+		]);
+
+		if (!is_null($keys)) {
+			$newAuthSession->set($keys);
+		}
+
+
+		return $this->token($userEmail);
+	}
+
+	public function isAuth($token)
+	{
+		$auth = false;
+		foreach ($this->sessionsFromPrefix($this->auth_prefix) as $key => $value) {
+			if (strpos($key, $this->auth_prefix.'token') === 0) {
+				if ($this->getEmailFromToken($token) === $this->get('email', $this->auth_prefix)) {
+					return true;
+				}
+			}
+		}
+
+		return $auth;
+	}
+
 
 	public function destroy()
 	{
