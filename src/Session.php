@@ -140,7 +140,6 @@ class Session
 	    return $this->sessionsFromPrefix;
 	}
 
-	// need fix
 	protected function token($key)
 	{
 		// $key represent for an E-mail
@@ -149,19 +148,12 @@ class Session
 		return $token;
 	}
 
-	// need fix
 	protected function getEmailFromToken($token)
 	{
 
 		return $this->authToken[$token];
 	}
 
-	public function test()
-	{
-		return $this->authToken;
-	}
-
-	// this function need fix
 	public function auth($userEmail, array $keys = null, $prefix = 'auth_')
 	{
 		$this->auth_prefix = $prefix;
