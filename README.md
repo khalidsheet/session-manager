@@ -75,6 +75,15 @@ $session->set([
 ```php
 $sesssion->get($key); // will use the default prefix.
 ```
+
+#### Get All Session by spicefic prefix
+```php
+$session->fromPrefix($prefix);
+
+#example
+$session->fromPrefix('test'); // returns an array of all session that have a "test" prefix
+
+```
 #### Remove Session by key
 ```php
 $sesssion->remove($key);
