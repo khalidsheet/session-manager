@@ -34,6 +34,11 @@ $session = new Session('test_');
 $session = new Session;
 $session->prefix('test_')->set('name', 'khalid'); // it will set the session as "test_name"
 ```
+
+#### Or you can generate a random prefix
+```php
+$session->randomPrefix($length);
+```
 #### Get the session prefix
 ```php
 $sesssion->getPrefix(); // will return the session prefix
