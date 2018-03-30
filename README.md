@@ -2,12 +2,19 @@
 ### Allows you to deal with Session in php
 ---
 
-# Usage 
--- **Basic Usage**
+# Installation
 ```php
+#include your file
+include './to/path/session-manager.php';
+
+use Prog98rammer\Session\Session;
+
 // start the session.
 $session = new Session();
+
 ```
+# Usage 
+-- **Basic Usage**
 
 ## Set the sessoin prefix
 #### There are two ways to set the prefix
