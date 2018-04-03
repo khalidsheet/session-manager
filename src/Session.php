@@ -64,12 +64,7 @@ class Session
 
 	public function randomPrefix($length = 15)
 	{
-	    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_$';
-	    $charactersLength = strlen($characters);
-	    $randomPrefix = '';
-	    for ($i = 0; $i < $length; $i++) {
-	        $randomPrefix .= $characters[rand(0, $charactersLength - 1)];
-	    }
+	    $randomPrefix = substr(str_shuffle('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_$'),0,$length);
 	    $this->_prefix = $randomPrefix . '_';
 	    return $this;
 	}
