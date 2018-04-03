@@ -1,4 +1,4 @@
-# PHP Session Class
+# PHP Session Manager
 ### Allows you to deal with Session in php
 ---
 
