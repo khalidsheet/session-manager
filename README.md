@@ -1,13 +1,20 @@
-# PHP Session Class
+# PHP Session Manager
 ### Allows you to deal with Session in php
 ---
 
-# Usage 
--- **Basic Usage**
+# Installation
 ```php
+#include your file
+include './to/path/session-manager.php';
+
+use Prog98rammer\Session\Session;
+
 // start the session.
 $session = new Session();
+
 ```
+# Usage 
+-- **Basic Usage**
 
 ## Set the sessoin prefix
 #### There are two ways to set the prefix
@@ -67,6 +74,15 @@ $session->set([
 #### Get one session by key
 ```php
 $sesssion->get($key); // will use the default prefix.
+```
+
+#### Get All Session by spicefic prefix
+```php
+$session->fromPrefix($prefix);
+
+#example
+$session->fromPrefix('test'); // returns an array of all session that have a "test" prefix
+
 ```
 #### Remove Session by key
 ```php
