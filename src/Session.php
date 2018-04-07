@@ -6,7 +6,7 @@ namespace Prog98rammer\Session;
 
 class Session
 {
-	protected $_prefix;
+	protected $_prefix = null;
 	protected $sessionId;
 	protected $sessionKey;
 	protected $userEmail = [];
@@ -14,7 +14,7 @@ class Session
 	protected $auth_prefix;
 	protected $authToken;
 	
-	public function __construct($cacheExpire = 90, $cacheLimiter = 'private', $sessionPrefix = 'iq_framework_')
+	public function __construct($sessionPrefix = null, $cacheExpire = 90, $cacheLimiter = 'public')
 	{
 		// set the cache limiter.
 		// nocache, private, private_no_expire, or public.
@@ -24,13 +24,16 @@ class Session
 		session_cache_expire($cacheExpire);
 
 		// start the session 
-		session_start();
+		if(!isset($_SESSION))
+			session_start();
 
 		// store the session id
 		$this->id();
 
 		// store the session prefix 
-		$this->_prefix = $sessionPrefix;
+		$this->_prefix = $sessionPrefix != null ? $sessionPrefix : $this->getPrefix();
+
+		//$this->_prefix = is_null($sessionPrefix) ? $this->randomPrefix() : $sessionPrefix;
 	}
 
 	public function status()
@@ -52,7 +55,7 @@ class Session
 		 return session_id();
 	}
 
-	public function prefix($prefix = 'iq_framework_')
+	public function prefix($prefix = 'app_')
 	{
 		if (is_string($prefix)) {
 			$this->_prefix = $prefix;
@@ -60,18 +63,6 @@ class Session
 		} else {
 			throw new \Exception("Prefix {$prefix} must be a String", 1);
 		}
-	}
-
-	public function randomPrefix($length = 15)
-	{
-	    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_$';
-	    $charactersLength = strlen($characters);
-	    $randomPrefix = '';
-	    for ($i = 0; $i < $length; $i++) {
-	        $randomPrefix .= $characters[rand(0, $charactersLength - 1)];
-	    }
-	    $this->_prefix = $randomPrefix . '_';
-	    return $this;
 	}
 
 	public function getPrefix()
@@ -112,6 +103,11 @@ class Session
 		return $this->sessionKey;
 	}
 
+	public static function has($key) {
+		$session = (new self);
+		return $session->search($key) != null ? true : false;
+	}
+
 
 
 	public function remove(...$key) 
@@ -127,7 +123,7 @@ class Session
 		return $this;
 	}
 
-	public function sessionsFromPrefix($prefix)
+	public function fromPrefix($prefix)
 	{
 		foreach($this->all() as $key => $value)
 	    {
@@ -140,52 +136,10 @@ class Session
 	    return $this->sessionsFromPrefix;
 	}
 
-	protected function token($key)
-	{
-		// $key represent for an E-mail
-		$token = hash('sha256', $key); 
+	protected function search($key) {
 
-		return $token;
+		return $this->all()[$key];
 	}
-
-	protected function getEmailFromToken($token)
-	{
-
-		return $this->authToken[$token];
-	}
-
-	public function auth($userEmail, array $keys = null, $prefix = 'auth_')
-	{
-		$this->auth_prefix = $prefix;
-		$this->authToken   = [$this->token($userEmail) => $userEmail];
-
-		$newAuthSession = $this->prefix($this->auth_prefix)->set([
-			'email' => $userEmail,
-			'token' => $this->token($userEmail)
-		]);
-
-		if (!is_null($keys)) {
-			$newAuthSession->set($keys);
-		}
-
-
-		return $this->token($userEmail);
-	}
-
-	public function isAuth($token)
-	{
-		$auth = false;
-		foreach ($this->sessionsFromPrefix($this->auth_prefix) as $key => $value) {
-			if (strpos($key, $this->auth_prefix.'token') === 0) {
-				if ($this->getEmailFromToken($token) === $this->get('email', $this->auth_prefix)) {
-					return true;
-				}
-			}
-		}
-
-		return $auth;
-	}
-
 
 	public function destroy()
 	{
