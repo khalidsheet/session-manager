@@ -65,8 +65,6 @@ class Session
 		}
 	}
 
-<<<<<<< HEAD
-=======
 	public function randomPrefix($length = 15)
 	{
 	    $randomPrefix = substr(str_shuffle('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_$'),0,$length);
@@ -74,7 +72,6 @@ class Session
 	    return $this;
 	}
 
->>>>>>> 4e8935e0558a9e989bd53b4a5d1e1b36601cae52
 	public function getPrefix()
 	{
 		return $this->_prefix;
