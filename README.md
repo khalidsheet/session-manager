@@ -84,6 +84,20 @@ $session->fromPrefix($prefix);
 $session->fromPrefix('test'); // returns an array of all session that have a "test" prefix
 
 ```
+#### Check if the session exists!
+```php
+
+Session::has($key); // returns True or False
+
+#example
+if(Session::has('is_loggin')) {
+   // do something
+} else {
+   // do something else
+}
+
+```
+
 #### Remove Session by key
 ```php
 $sesssion->remove($key);
